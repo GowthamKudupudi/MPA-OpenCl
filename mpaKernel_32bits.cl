@@ -1,11 +1,4 @@
 
-#define ADD 1
-#define SUBTRACT 2
-#define ADDMOD 3
-#define SUBTRACTMOD 4
-#define MULTIPLYOPRANDSCANNING 5
-#define MULTIPLYPRODUCTSCANNING 6
-#define MONTGOMERYMULTIPLICATION 7
 #define TWOPOW_W 0x100000000 
 #include <mpaKernel_32bits.h>
 // use mul_hi 
@@ -59,22 +52,21 @@ for ( i = 0; i < WORDLENGTH_T; i++)
 }
 
 
-void add(__global uint* input1, __global uint* input2, __global uint* outputBytes, const size_t ID)
-{
-     ulong carry = 0;
-     ulong somme = 0;
-     int i=0;
-    for (i=WORDLENGTH_T-1; i >= 0 ; i--)
-    {
-        const size_t index=ID*WORDLENGTH_T+i;
-        somme = carry+ (ulong)input1[index] + (ulong)input2[index] ;
-        carry = 0;
-        if (somme >= TWOPOW_W) {
-            somme -= TWOPOW_W;
-            carry = 1;
-        }
-        outputBytes[index] =(uint) somme;
-        
+void add (__global uint* input1, __global uint* input2,
+          __global uint* outputBytes,
+          const size_t ID) {
+   ulong carry = 0;
+   ulong somme = 0;
+   int i=0;
+   for (i=WORDLENGTH_T-1; i >= 0 ; i--) {
+      const size_t index=ID*WORDLENGTH_T+i;
+      somme = carry+ (ulong)input1[index] + (ulong)input2[index] ;
+      carry = 0;
+      if (somme >= TWOPOW_W) {
+         somme -= TWOPOW_W;
+         carry = 1;
+      }
+      outputBytes[index] =(uint) somme;
     }
 }
 
@@ -373,13 +365,17 @@ int compareResultPrivPrime(__private uint resultPrivate[],__private uint PRIME[]
     
 }
 
-__kernel void mpaKernel(__global uint* input1, __global uint* input2, __global uint* outputBytes,__constant  int* OPERATOR_WORDSIZE_BITSLENGHT_MPRIME, __constant uint* globalPRIME)
+__kernel void mpaKernel(__global uint* input1, __global uint* input2,
+                        __global uint* outputBytes,
+                        __constant  int* OPERATOR_WORDSIZE_BITSLENGHT_MPRIME,
+                        __constant uint* globalPRIME)
 {
     
     const int m_prime=OPERATOR_WORDSIZE_BITSLENGHT_MPRIME[3];
     
     __private  uint PRIME[WORDLENGTH_T]
-     ={0xffffffff,0xffffffff,0xffffffff,0xffffffff,0xffffffff,0xffffffff,0xfffffffe,0xfffffc2f};
+     ={0xffffffff,0xffffffff,0xffffffff,0xffffffff,0xffffffff,0xffffffff,
+       0xfffffffe,0xfffffc2f};
   //  int i;
  //   for( i=0;i<WORDLENGTH_T;i++) PRIME[i]=globalPRIME[i];
     const size_t ID=get_global_id(0);
