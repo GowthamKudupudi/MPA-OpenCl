@@ -70,7 +70,8 @@ void add (__global uint* input1, __global uint* input2,
     }
 }
 
-void multiplyOperandScanning(__global uint* input1, __global uint* input2, __global uint* outputBytes, const size_t ID)
+void multiplyOperandScanning(__global uint* input1, __global uint* input2,
+                             __global uint* outputBytes, const size_t ID)
 {
     unsigned long int UV=0;
     unsigned long int U=0;
@@ -102,7 +103,8 @@ int MIN(int x,int y) {
     if(x>y) return x;
     else return y;
 }
-void multiplyProductScanning(__global uint* input1, __global uint* input2, __global uint* outputBytes, const size_t ID)
+void multiplyProductScanning(__global uint* input1, __global uint* input2,
+                             __global uint* outputBytes, const size_t ID)
 {
     unsigned long int UV=0;
     unsigned long int U=0;
@@ -142,7 +144,9 @@ void subtractPositive(__global uint* input1, __global uint* input2, __global uin
    
 }
 
- void addMod(__global uint* input1, __global uint* input2, __global uint* outputBytes, const size_t ID, __private uint PRIME[])
+ void addMod(__global uint* input1, __global uint* input2,
+             __global uint* outputBytes, const size_t ID,
+             __private uint PRIME[])
 {
    
    
